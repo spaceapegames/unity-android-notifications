@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/bill/Projects/unity-plugins/plugin-source-androidstudio222/app/build/intermediates/res/merged/androidTest/debug/drawable/app_icon.png",
+        "source": "/Users/bill/Projects/unity-plugins/plugin-source-androidstudio222/app/build/intermediates/bundles/debug/res/drawable/app_icon.png"
+    },
+    {
+        "merged": "/Users/bill/Projects/unity-plugins/plugin-source-androidstudio222/app/build/intermediates/res/merged/androidTest/debug/drawable/notify_icon_big.png",
+        "source": "/Users/bill/Projects/unity-plugins/plugin-source-androidstudio222/app/build/intermediates/bundles/debug/res/drawable/notify_icon_big.png"
+    },
+    {
+        "merged": "/Users/bill/Projects/unity-plugins/plugin-source-androidstudio222/app/build/intermediates/res/merged/androidTest/debug/drawable/notify_icon_small.png",
+        "source": "/Users/bill/Projects/unity-plugins/plugin-source-androidstudio222/app/build/intermediates/bundles/debug/res/drawable/notify_icon_small.png"
+    }
+]
