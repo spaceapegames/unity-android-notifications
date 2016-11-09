@@ -22,7 +22,7 @@ public class UnityNotificationManager extends BroadcastReceiver
 {
 	
     public static void SetNotification(int id, long delayMs, String title, String message, String ticker, int sound, int vibrate, 
-            int lights, String largeIconResource, String smallIconResource, int bgColor, int executeMode, String unityClass)
+            int lights, String largeIconResource, String smallIconResource, int bgColor, int executeMode, String unityClass, String tracking_parameter)
     {
         Activity currentActivity = UnityPlayer.currentActivity;
         AlarmManager am = (AlarmManager)currentActivity.getSystemService(Context.ALARM_SERVICE);
@@ -38,6 +38,7 @@ public class UnityNotificationManager extends BroadcastReceiver
         intent.putExtra("l_icon", largeIconResource);
         intent.putExtra("s_icon", smallIconResource);
         intent.putExtra("activity", unityClass);
+        intent.putExtra("tracking_parameter", tracking_parameter);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
         	if (executeMode == 2)
@@ -52,7 +53,7 @@ public class UnityNotificationManager extends BroadcastReceiver
     }
     
     public static void SetRepeatingNotification(int id, long delay, String title, String message, String ticker, long rep, int sound, int vibrate, int lights, 
-    		String largeIconResource, String smallIconResource, int bgColor, String unityClass)
+    		String largeIconResource, String smallIconResource, int bgColor, String unityClass, String tracking_parameter)
     {
     	Activity currentActivity = UnityPlayer.currentActivity;
     	AlarmManager am = (AlarmManager)currentActivity.getSystemService(Context.ALARM_SERVICE);
@@ -68,6 +69,7 @@ public class UnityNotificationManager extends BroadcastReceiver
         intent.putExtra("l_icon", largeIconResource);
         intent.putExtra("s_icon", smallIconResource);
         intent.putExtra("activity", unityClass);
+        intent.putExtra("tracking_parameter", tracking_parameter);
     	am.setRepeating(0, System.currentTimeMillis() + delay, rep, PendingIntent.getBroadcast(currentActivity, id, intent, 0));
     }
     
@@ -85,6 +87,7 @@ public class UnityNotificationManager extends BroadcastReceiver
         Boolean sound = intent.getBooleanExtra("sound", false);
         Boolean vibrate = intent.getBooleanExtra("vibrate", false);
         Boolean lights = intent.getBooleanExtra("lights", false);
+        String trackingParameter = intent.getStringExtra("tracking_parameter");
         int id = intent.getIntExtra("id", 0);
 
         Resources res = context.getResources();
@@ -99,6 +102,7 @@ public class UnityNotificationManager extends BroadcastReceiver
 		}
 
         Intent notificationIntent = new Intent(context, unityClassActivity);
+        notificationIntent.putExtra("tracking_parameter", trackingParameter);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
         Notification.Builder builder = new Notification.Builder(context);
         
