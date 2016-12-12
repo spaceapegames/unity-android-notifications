@@ -110,7 +110,8 @@ public class UnityNotificationManager extends BroadcastReceiver
         	.setWhen(System.currentTimeMillis())
         	.setAutoCancel(true)
         	.setContentTitle(title)
-        	.setContentText(message);
+        	.setContentText(message)
+            .setPriority(Notification.PRIORITY_DEFAULT);
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         	builder.setColor(color);
@@ -127,10 +128,11 @@ public class UnityNotificationManager extends BroadcastReceiver
         if(sound)
             builder.setSound(RingtoneManager.getDefaultUri(2));
 
-        if(vibrate)
-            builder.setVibrate(new long[] {
-                    1000L, 1000L
-            });
+        if(vibrate) {
+            builder
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setVibrate(new long[] {250L, 500L});
+        }
 
         if(lights)
             builder.setLights(Color.GREEN, 3000, 3000);
