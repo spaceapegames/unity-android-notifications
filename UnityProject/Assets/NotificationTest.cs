@@ -1,44 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NotificationTest : MonoBehaviour {
+public class NotificationTest : MonoBehaviour
+{
+    void Awake()
+    {
+        LocalNotification.ClearNotifications();
+    }
 
-    float sleepUntil = 0;
-	
-	void OnGUI () {
-        //Color is supported only in Android >= 5.0
-        GUI.enabled = sleepUntil < Time.time;
+    public void OneTime()
+    {
+        LocalNotification.SendNotification(1, 5000, "Title", "Long message text", new Color32(0xff, 0x44, 0x44, 255));
+    }
 
-        if (GUILayout.Button("5 SECONDS", GUILayout.Height(Screen.height * 0.2f)))
-        {
-            LocalNotification.SendNotification(1, 5, "Title", "Long message text", new Color32(0xff, 0x44, 0x44, 255));
-            sleepUntil = Time.time + 5;
-        }
+    public void OneTimeBigIcon()
+    {
+        LocalNotification.SendNotification(1, 5000, "Title", "Long message text with big icon", new Color32(0xff, 0x44, 0x44, 255), true, true, true, "app_icon");
+    }
 
-        if (GUILayout.Button("5 SECONDS BIG ICON", GUILayout.Height(Screen.height * 0.2f)))
-        {
-            LocalNotification.SendNotification(1, 5, "Title", "Long message text with big icon", new Color32(0xff, 0x44, 0x44, 255), true, true, true, "app_icon");
-            sleepUntil = Time.time + 5;
-        }
+    public void OneTimeWithActions()
+    {
+        LocalNotification.Action action1 = new LocalNotification.Action("background", "In Background", this);
+        action1.Foreground = false;
+        LocalNotification.Action action2 = new LocalNotification.Action("foreground", "In Foreground", this);
+        LocalNotification.SendNotification(1, 5000, "Title", "Long message text with actions", new Color32(0xff, 0x44, 0x44, 255), true, true, true, null, "boing", "default", action1, action2);
+    }
 
-        if (GUILayout.Button("EVERY 5 SECONDS", GUILayout.Height(Screen.height * 0.2f)))
-        {
-            LocalNotification.SendRepeatingNotification(1, 5, 5, "Title", "Long message text", new Color32(0xff, 0x44, 0x44, 255));
-            sleepUntil = Time.time + 99999;
-        }
+    public void Repeating()
+    {
+        LocalNotification.SendRepeatingNotification(1, 5000, 60000, "Title", "Long message text", new Color32(0xff, 0x44, 0x44, 255));
+    }
 
-        if (GUILayout.Button("10 SECONDS EXACT", GUILayout.Height(Screen.height * 0.2f)))
-        {
-            LocalNotification.SendNotification(1, 10, "Title", "Long exact message text", new Color32(0xff, 0x44, 0x44, 255), executeMode: LocalNotification.NotificationExecuteMode.ExactAndAllowWhileIdle);
-            sleepUntil = Time.time + 10;
-        }
+    public void Stop()
+    {
+        LocalNotification.CancelNotification(1);
+    }
 
-        GUI.enabled = true;
-
-        if (GUILayout.Button("STOP", GUILayout.Height(Screen.height * 0.2f)))
-        {
-            LocalNotification.CancelNotification(1);
-            sleepUntil = 0;
-        }
-	}
+    public void OnAction(string identifier)
+    {
+        Debug.Log("Got action " + identifier);
+    }
 }
