@@ -19,3 +19,4 @@ build
 .externalNativeBuild
 *.sw[ponm]
 workspace.xml
+*/.idea/caches
