@@ -158,9 +158,19 @@ public class UnityNotificationManager extends BroadcastReceiver
         String trackingParameter = intent.getStringExtra("tracking_parameter");
         int id = intent.getIntExtra("id", 0);
         String channel = intent.getStringExtra("channel");
-        Bundle b = intent.getBundleExtra("actionsBundle");
-        ArrayList<NotificationAction> actions = b.getParcelableArrayList("actions");
-        Log.i("pangonotifications","UnityNotificationManager.onReceive started " + id + " " + title);
+        ArrayList<NotificationAction> actions;
+        {
+            Bundle b = intent.getBundleExtra("actionsBundle");
+            if (b != null)
+            {
+                actions = b.getParcelableArrayList("actions");
+                Log.i("pangonotifications","UnityNotificationManager.onReceive started " + id + " " + title);
+            }
+            else
+            {
+                actions = null;
+            }
+        }
 
         Resources res = context.getResources();
 
