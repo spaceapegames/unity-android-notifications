@@ -213,10 +213,11 @@ public class UnityNotificationManager extends BroadcastReceiver
                 builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
         }
 
-        if (vibrate)
-            builder.setVibrate(new long[] {
-                    1000L, 1000L
-            });
+        if(vibrate) {
+            builder
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setVibrate(new long[]{250L, 500L});
+        }
 
         if (lights)
             builder.setLights(Color.GREEN, 3000, 3000);
