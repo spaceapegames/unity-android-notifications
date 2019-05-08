@@ -20,3 +20,4 @@ build
 *.sw[ponm]
 workspace.xml
 */.idea/caches
+PluginSrc/local.properties
