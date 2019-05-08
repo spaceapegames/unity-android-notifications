@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
@@ -33,6 +34,7 @@ import java.util.logging.Logger;
 
 public class UnityNotificationManager extends BroadcastReceiver
 {
+    private static final String logChannel = "SpaceApeNotification";
     private static Set<String> channels = new HashSet<>();
 
     public static void CreateChannel(String identifier, String name, String description, int importance, String soundName, int enableLights, int lightColor, int enableVibration, long[] vibrationPattern, String bundle) {
@@ -41,7 +43,7 @@ public class UnityNotificationManager extends BroadcastReceiver
 
         channels.add(identifier);
 
-        Log.i("pangonotifications","UnityNotificationManager.CreateChannel");
+        Log.i(logChannel,"UnityNotificationManager.CreateChannel");
 
         NotificationManager nm = (NotificationManager) UnityPlayer.currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel channel = new NotificationChannel(identifier, name, importance);
@@ -74,7 +76,7 @@ public class UnityNotificationManager extends BroadcastReceiver
                                        int lights, String largeIconResource, String smallIconResource, int bgColor, String tracking_parameter, String bundle, String channel,
                                        ArrayList<NotificationAction> actions)
     {
-        Log.i("pangonotifications","UnityNotificationManager.SetNotification " + id + " " + title);
+        Log.i(logChannel,"UnityNotificationManager.SetNotification " + id + " " + title);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (channel == null)
                 channel = "default";
@@ -110,7 +112,7 @@ public class UnityNotificationManager extends BroadcastReceiver
     public static void SetRepeatingNotification(int id, long delayMs, String title, String message, String ticker, long rep, int sound, String soundName, int vibrate, int lights,
                                                 String largeIconResource, String smallIconResource, int bgColor, String tracking_parameter, String bundle, String channel, ArrayList<NotificationAction> actions)
     {
-        Log.i("pangonotifications","UnityNotificationManager.SetRepeatingNotification " + id + " " + title);
+        Log.i(logChannel,"UnityNotificationManager.SetRepeatingNotification " + id + " " + title);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (channel == null)
                 channel = "default";
@@ -142,8 +144,6 @@ public class UnityNotificationManager extends BroadcastReceiver
 
     public void onReceive(Context context, Intent intent)
     {
-        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-
         String ticker = intent.getStringExtra("ticker");
         String title = intent.getStringExtra("title");
         String message = intent.getStringExtra("message");
@@ -164,7 +164,7 @@ public class UnityNotificationManager extends BroadcastReceiver
             if (b != null && b.containsKey("actions"))
             {
                 actions = b.getParcelableArrayList("actions");
-                Log.i("pangonotifications","UnityNotificationManager.onReceive started " + id + " " + title);
+                Log.i(logChannel,"UnityNotificationManager.onReceive started " + id + " " + title);
             }
             else
             {
@@ -232,9 +232,10 @@ public class UnityNotificationManager extends BroadcastReceiver
             }
         }
 
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         Notification notification = builder.build();
-        notificationManager.notify(id, notification);
-        Log.i("pangonotifications","UnityNotificationManager.onReceive finished " + id + " " + title);
+        notificationManagerCompat.notify(id, notification);
+        Log.i(logChannel,"UnityNotificationManager.onReceive finished " + id + " " + title);
     }
 
     private static PendingIntent buildActionIntent(NotificationAction action, int id,Context context) {
@@ -249,7 +250,7 @@ public class UnityNotificationManager extends BroadcastReceiver
 
     public static void CancelPendingNotification(int id)
     {
-        Log.i("pangonotifications","UnityNotificationManager.CancelPendingNotification " + id);
+        Log.i(logChannel,"UnityNotificationManager.CancelPendingNotification " + id);
         Activity currentActivity = UnityPlayer.currentActivity;
         AlarmManager am = (AlarmManager)currentActivity.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(currentActivity, UnityNotificationManager.class);
@@ -259,7 +260,7 @@ public class UnityNotificationManager extends BroadcastReceiver
 
     public static void ClearShowingNotifications()
     {
-        Log.i("pangonotifications","UnityNotificationManager.ClearShowingNotifications");
+        Log.i(logChannel,"UnityNotificationManager.ClearShowingNotifications");
         Activity currentActivity = UnityPlayer.currentActivity;
         NotificationManager nm = (NotificationManager)currentActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancelAll();
